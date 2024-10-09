@@ -1,0 +1,13 @@
+{
+  "enchantment.ipdnaeipenchantments.anglers_arm": "Angler's Arm",
+  "enchantment.ipdnaeipenchantments.anglers_arm.desc": "Increases the velocity and distance of fishing hooks",
+  "enchantment.ipdnaeipenchantments.draw": "Draw",
+  "enchantment.ipdnaeipenchantments.draw.desc": "Increases the velocity and distance of arrows",
+  "enchantment.ipdnaeipenchantments.harpooning": "Harpooning",
+  "enchantment.ipdnaeipenchantments.harpooning.desc": "Deals damage to mobs hooked with a fishing rod",
+  "enchantment.ipdnaeipenchantments.hunter": "Hunter",
+  "enchantment.ipdnaeipenchantments.hunter.desc": "Increases the loot obtained from arrow kills",
+  "enchantment.ipdnaeipenchantments.ice_aspect": "Ice Aspect",
+  "enchantment.ipdnaeipenchantments.ice_aspect.desc": "Each attack incrementally freezes the target"
+}
+
