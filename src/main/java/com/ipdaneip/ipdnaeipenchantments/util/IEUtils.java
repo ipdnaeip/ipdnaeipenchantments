@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.registries.RegistryObject;
@@ -14,9 +15,10 @@ import java.util.*;
 public class IEUtils {
 
     private static final Map<Enum<EnchantmentCategory>, List<RegistryObject<Enchantment>>> enchantmentROMapping = new HashMap<>();
-    private static final Map<Object, List<Object>> objectMap = new HashMap<>();
 
-    public static void addObjectKeyMap(Object objectKey, Object[]... objects) {
+    //private static final Map<Object, List<Object>> objectMap = new HashMap<>();
+
+/*    public static void addObjectKeyMap(Object objectKey, Object[]... objects) {
         List<Object> keyList = objectMap.get(objectKey);
         List<Object> keyListConverted = Arrays.asList(objects);
         if (keyList == null) {
@@ -27,7 +29,7 @@ public class IEUtils {
         objectMap.put(objectKey, keyList);
     }
 
-/*    @SafeVarargs
+    @SafeVarargs
     public static void addCategoryROMap(EnchantmentCategory enchantmentCategory, RegistryObject<Enchantment>... enchantments) {
         addObjectKeyMap(enchantmentCategory, enchantments);
     }
@@ -53,16 +55,10 @@ public class IEUtils {
     }
 
     public static void applyProjectileEnchantments(Projectile projectile, LivingEntity owner, EnchantmentCategory enchantmentCategory) {
-        if (enchantmentCategory.canEnchant(owner.getMainHandItem().getItem())) {
+        ItemStack itemStack = owner.getItemInHand(owner.getUsedItemHand());
+        if (enchantmentCategory.canEnchant(itemStack.getItem())) {
             for (RegistryObject<Enchantment> enchantment : getROsInCategory(enchantmentCategory)) {
-                int level = owner.getMainHandItem().getEnchantmentLevel(enchantment.get());
-                if (level > 0) {
-                    projectile.getPersistentData().putInt(enchantment.getId().toString(), level);
-                }
-            }
-        } else if (enchantmentCategory.canEnchant(owner.getOffhandItem().getItem())) {
-            for (RegistryObject<Enchantment> enchantment : getROsInCategory(enchantmentCategory)) {
-                int level = owner.getOffhandItem().getEnchantmentLevel(enchantment.get());
+                int level = itemStack.getEnchantmentLevel(enchantment.get());
                 if (level > 0) {
                     projectile.getPersistentData().putInt(enchantment.getId().toString(), level);
                 }

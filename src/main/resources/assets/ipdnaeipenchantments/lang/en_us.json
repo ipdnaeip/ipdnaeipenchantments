@@ -1,13 +1,25 @@
 {
   "enchantment.ipdnaeipenchantments.anglers_arm": "Angler's Arm",
   "enchantment.ipdnaeipenchantments.anglers_arm.desc": "Increases the velocity and distance of fishing hooks",
+  "enchantment.ipdnaeipenchantments.charging": "Charging",
+  "enchantment.ipdnaeipenchantments.charging.desc": "Increases your damage while sprinting",
   "enchantment.ipdnaeipenchantments.draw": "Draw",
   "enchantment.ipdnaeipenchantments.draw.desc": "Increases the velocity and distance of arrows",
+  "enchantment.ipdnaeipenchantments.gluttony": "Gluttony",
+  "enchantment.ipdnaeipenchantments.gluttony.desc": "Increases the velocity and distance of arrows",
   "enchantment.ipdnaeipenchantments.harpooning": "Harpooning",
   "enchantment.ipdnaeipenchantments.harpooning.desc": "Deals damage to mobs hooked with a fishing rod",
   "enchantment.ipdnaeipenchantments.hunter": "Hunter",
   "enchantment.ipdnaeipenchantments.hunter.desc": "Increases the loot obtained from arrow kills",
   "enchantment.ipdnaeipenchantments.ice_aspect": "Ice Aspect",
-  "enchantment.ipdnaeipenchantments.ice_aspect.desc": "Each attack incrementally freezes the target"
+  "enchantment.ipdnaeipenchantments.ice_aspect.desc": "Each attack incrementally freezes the target",
+  "enchantment.ipdnaeipenchantments.lifesteal": "Lifesteal",
+  "enchantment.ipdnaeipenchantments.lifesteal.desc": "Heal for a percentage of your damage dealt",
+  "enchantment.ipdnaeipenchantments.lightweight": "Lightweight",
+  "enchantment.ipdnaeipenchantments.lightweight.desc": "Increases the attack speed of your weapon",
+  "enchantment.ipdnaeipenchantments.phalanx": "Phalanx",
+  "enchantment.ipdnaeipenchantments.phalanx.desc": "Move faster while using a shield",
+  "enchantment.ipdnaeipenchantments.sturdy": "Sturdy",
+  "enchantment.ipdnaeipenchantments.sturdy.desc": "Reduces knockback from enemy attacks"
 }
 

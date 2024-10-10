@@ -3,7 +3,7 @@ package com.ipdaneip.ipdnaeipenchantments.registry;
 import com.ipdaneip.ipdnaeipenchantments.IpdnaeipEnchantments;
 import com.ipdaneip.ipdnaeipenchantments.enchantment.*;
 import com.ipdaneip.ipdnaeipenchantments.util.IEUtils;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -24,13 +24,27 @@ public class IEEnchantments {
     public static final RegistryObject<Enchantment> ANGLERS_ARM = DEFERRED_REGISTER.register("anglers_arm", AnglersArmEnchantment::new);
     public static final RegistryObject<Enchantment> HARPOONING = DEFERRED_REGISTER.register("harpooning", HarpooningEnchantment::new);
 
+    //Head
+    public static final RegistryObject<Enchantment> GLUTTONY = DEFERRED_REGISTER.register("gluttony", GluttonyEnchantment::new);
+
+    //Legs
+    public static final RegistryObject<Enchantment> STURDY = DEFERRED_REGISTER.register("sturdy", SturdyEnchantment::new);
+
+    //Melee
+    public static final RegistryObject<Enchantment> CHARGING = DEFERRED_REGISTER.register("charging", ChargingEnchantment::new);
+    public static final RegistryObject<Enchantment> LIGHTWEIGHT = DEFERRED_REGISTER.register("lightweight", LightweightEnchantment::new);
+
+    //Shield
+    public static final RegistryObject<Enchantment> PHALANX = DEFERRED_REGISTER.register("phalanx", PhalanxEnchantment::new);
+
     //Sword
     public static final RegistryObject<Enchantment> ICE_ASPECT = DEFERRED_REGISTER.register("ice_aspect", IceAspectEnchantment::new);
+    public static final RegistryObject<Enchantment> LIFESTEAL = DEFERRED_REGISTER.register("lifesteal", LifestealEnchantment::new);
 
     //EnchantmentCategories
 
-    //public static final EnchantmentCategory MELEE = EnchantmentCategory.create("melee", item -> item )
-    public static final EnchantmentCategory SHIELD = EnchantmentCategory.create("shield", item -> item == Items.SHIELD);
+    public static final EnchantmentCategory MELEE = EnchantmentCategory.create("melee", item -> item instanceof TieredItem || item instanceof TridentItem);
+    public static final EnchantmentCategory SHIELD = EnchantmentCategory.create("shield", item -> item instanceof ShieldItem);
 
     //EnchantmentCategoryRegistryObjects (necessary for projectile based enchantments)
 
