@@ -1,0 +1,8 @@
+{
+  "package": "com.ipdnaeip.ipdnaeipenchantments.mixin",
+  "refmap": "ipdnaeipenchantments.refmap.json",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ShieldItemMixin"
+  ]
+}

@@ -1,8 +1,8 @@
-package com.ipdaneip.ipdnaeipenchantments.event;
+package com.ipdnaeip.ipdnaeipenchantments.event;
 
-import com.ipdaneip.ipdnaeipenchantments.enchantment.*;
-import com.ipdaneip.ipdnaeipenchantments.registry.IEEnchantments;
-import com.ipdaneip.ipdnaeipenchantments.util.IEUtils;
+import com.ipdnaeip.ipdnaeipenchantments.enchantment.*;
+import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantments;
+import com.ipdnaeip.ipdnaeipenchantments.util.IEUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;

@@ -1,9 +1,7 @@
-package com.ipdaneip.ipdnaeipenchantments.util;
+package com.ipdnaeip.ipdnaeipenchantments.util;
 
-import com.ipdaneip.ipdnaeipenchantments.registry.IEEnchantments;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;

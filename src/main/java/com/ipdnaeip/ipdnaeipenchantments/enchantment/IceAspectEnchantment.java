@@ -1,4 +1,4 @@
-package com.ipdaneip.ipdnaeipenchantments.enchantment;
+package com.ipdnaeip.ipdnaeipenchantments.enchantment;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;

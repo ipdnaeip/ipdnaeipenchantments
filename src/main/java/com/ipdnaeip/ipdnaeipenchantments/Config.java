@@ -1,4 +1,4 @@
-package com.ipdaneip.ipdnaeipenchantments;
+package com.ipdnaeip.ipdnaeipenchantments;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;

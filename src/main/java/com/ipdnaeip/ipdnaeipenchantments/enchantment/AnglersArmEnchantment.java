@@ -1,14 +1,16 @@
-package com.ipdaneip.ipdnaeipenchantments.enchantment;
+package com.ipdnaeip.ipdnaeipenchantments.enchantment;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraftforge.fml.common.Mod;
 
-public class HarpooningEnchantment extends Enchantment {
+@Mod.EventBusSubscriber
+public class AnglersArmEnchantment extends Enchantment {
 
-    public static final float DAMAGE_MULTIPLIER = 0.75f;
+    public static final float VELOCITY_MULTIPLIER = 0.30f;
 
-    public HarpooningEnchantment() {
+    public AnglersArmEnchantment() {
         super(Rarity.UNCOMMON, EnchantmentCategory.FISHING_ROD, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
@@ -16,4 +18,5 @@ public class HarpooningEnchantment extends Enchantment {
     public int getMaxLevel() {
         return 3;
     }
+
 }

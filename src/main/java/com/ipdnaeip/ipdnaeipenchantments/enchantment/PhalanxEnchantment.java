@@ -1,6 +1,6 @@
-package com.ipdaneip.ipdnaeipenchantments.enchantment;
+package com.ipdnaeip.ipdnaeipenchantments.enchantment;
 
-import com.ipdaneip.ipdnaeipenchantments.registry.IEEnchantments;
+import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantments;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 
@@ -16,4 +16,5 @@ public class PhalanxEnchantment extends Enchantment {
     public int getMaxLevel() {
         return 4;
     }
+
 }

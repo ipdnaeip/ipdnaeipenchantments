@@ -1,6 +1,6 @@
-package com.ipdaneip.ipdnaeipenchantments;
+package com.ipdnaeip.ipdnaeipenchantments;
 
-import com.ipdaneip.ipdnaeipenchantments.registry.IEEnchantments;
+import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantments;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;

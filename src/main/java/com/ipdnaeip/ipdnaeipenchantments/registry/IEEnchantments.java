@@ -1,8 +1,8 @@
-package com.ipdaneip.ipdnaeipenchantments.registry;
+package com.ipdnaeip.ipdnaeipenchantments.registry;
 
-import com.ipdaneip.ipdnaeipenchantments.IpdnaeipEnchantments;
-import com.ipdaneip.ipdnaeipenchantments.enchantment.*;
-import com.ipdaneip.ipdnaeipenchantments.util.IEUtils;
+import com.ipdnaeip.ipdnaeipenchantments.IpdnaeipEnchantments;
+import com.ipdnaeip.ipdnaeipenchantments.enchantment.*;
+import com.ipdnaeip.ipdnaeipenchantments.util.IEUtils;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
@@ -19,6 +19,7 @@ public class IEEnchantments {
     //Bow
     public static final RegistryObject<Enchantment> DRAW = DEFERRED_REGISTER.register("draw", DrawEnchantment::new);
     public static final RegistryObject<Enchantment> HUNTER = DEFERRED_REGISTER.register("hunter", HunterEnchantment::new);
+    public static final RegistryObject<Enchantment> RANGER = DEFERRED_REGISTER.register("ranger", RangerEnchantment::new);
 
     //Fishing Rod
     public static final RegistryObject<Enchantment> ANGLERS_ARM = DEFERRED_REGISTER.register("anglers_arm", AnglersArmEnchantment::new);
