@@ -1,6 +1,6 @@
-package com.ipdnaeip.ipdnaeipenchantments.enchantment;
+package com.ipdnaeip.ipdnaeipenchantments.enchantment.enchantments;
 
-import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantments;
+import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantmentCategories;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 
@@ -12,7 +12,7 @@ public class LightweightEnchantment extends Enchantment {
     public static final double ATTACK_SPEED_INCREASE = 0.10d;
 
     public LightweightEnchantment() {
-        super(Rarity.UNCOMMON, IEEnchantments.MELEE, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+        super(Rarity.UNCOMMON, IEEnchantmentCategories.MELEE, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     @Override

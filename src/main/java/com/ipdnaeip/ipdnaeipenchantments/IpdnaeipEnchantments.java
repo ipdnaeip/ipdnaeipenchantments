@@ -1,9 +1,11 @@
 package com.ipdnaeip.ipdnaeipenchantments;
 
+import com.ipdnaeip.ipdnaeipenchantments.config.IEConfig;
 import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantments;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -15,6 +17,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -24,8 +27,17 @@ public class IpdnaeipEnchantments {
     public static final String MOD_ID = "ipdnaeipenchantments";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
+    public static final IEConfig IE_CONFIG;
+    private static final ForgeConfigSpec IE_CONFIG_SPEC;
+
+    static {
+        final Pair<IEConfig, ForgeConfigSpec> configPair = new ForgeConfigSpec.Builder().configure(IEConfig::new);
+        IE_CONFIG = configPair.getLeft();
+        IE_CONFIG_SPEC = configPair.getRight();
+    }
 
     public IpdnaeipEnchantments() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IE_CONFIG_SPEC, "ipdnaeipenchantments.toml");
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEEnchantments.DEFERRED_REGISTER.register(modEventBus);
         // Register the commonSetup method for modloading
@@ -34,7 +46,7 @@ public class IpdnaeipEnchantments {
         MinecraftForge.EVENT_BUS.register(this);
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
     }
 
