@@ -1,5 +1,7 @@
 package com.ipdnaeip.ipdnaeipenchantments.accessor;
 
+import net.minecraft.world.item.ItemStack;
+
 public interface AbstractArrowAccessor {
 
     //Getters
@@ -13,6 +15,8 @@ public interface AbstractArrowAccessor {
     int getHunterLevelIE();
 
     int getMarksmanLevelIE();
+
+    ItemStack getPickupItem_IE();
 
     //Setters
 

@@ -41,7 +41,8 @@ public class IEClientEvents {
     public static void onMovementInputUpdateEvent(MovementInputUpdateEvent event) {
         Player player = event.getEntity();
         Input input = event.getInput();
-        ItemStack itemStack = player.getItemInHand(player.getUsedItemHand());
+        ItemStack itemStack = player.getUseItem();
+        //ItemStack itemStack = player.getItemInHand(player.getUsedItemHand());
         int level;
         level = itemStack.getEnchantmentLevel(IEEnchantments.PHALANX.get());
         if (level > 0 && player.isUsingItem()) {

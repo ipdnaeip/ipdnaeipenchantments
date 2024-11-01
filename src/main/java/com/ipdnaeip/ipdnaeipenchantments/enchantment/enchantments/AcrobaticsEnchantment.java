@@ -4,20 +4,16 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
-public class DrawEnchantment extends Enchantment {
+public class AcrobaticsEnchantment extends Enchantment {
 
-    public static final float VELOCITY_MULTIPLIER = 0.10f;
+    public static final float FLY_INCREASE = 0.005f;
 
-    public DrawEnchantment() {
-        super(Rarity.RARE, EnchantmentCategory.BOW, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+    public AcrobaticsEnchantment() {
+        super(Rarity.RARE, EnchantmentCategory.ARMOR_LEGS, new EquipmentSlot[]{EquipmentSlot.LEGS});
     }
 
     @Override
     public int getMaxLevel() {
         return 3;
     }
-
 }
-
-
-

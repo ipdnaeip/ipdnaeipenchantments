@@ -12,6 +12,7 @@
     "FoodDataMixin",
     "ItemMixin",
     "ItemStackMixin",
+    "LivingEntityMixin",
     "PlayerMixin",
     "PowderSnowBlockMixin"
   ],

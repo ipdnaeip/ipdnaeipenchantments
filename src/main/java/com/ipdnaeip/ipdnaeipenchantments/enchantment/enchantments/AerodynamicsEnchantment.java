@@ -6,7 +6,7 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class AerodynamicsEnchantment extends Enchantment {
 
-    public static final float GRAVITY_REDUCTION = 0.1f;
+    public static final double GRAVITY_REDUCTION = 0.007D;
 
     public AerodynamicsEnchantment() {
         super(Rarity.UNCOMMON, EnchantmentCategory.BOW, new EquipmentSlot[]{EquipmentSlot.MAINHAND});

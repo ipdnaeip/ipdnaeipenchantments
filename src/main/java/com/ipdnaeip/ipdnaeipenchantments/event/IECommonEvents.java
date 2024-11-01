@@ -4,8 +4,14 @@ import com.ipdnaeip.ipdnaeipenchantments.accessor.AbstractArrowAccessor;
 import com.ipdnaeip.ipdnaeipenchantments.accessor.FishingHookAccessor;
 import com.ipdnaeip.ipdnaeipenchantments.enchantment.enchantments.*;
 import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantments;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -15,26 +21,64 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class IECommonEvents {
+
+    @SubscribeEvent
+    public static void onAnvilUpdateEvent(AnvilUpdateEvent event) {
+        ItemStack left = event.getLeft();
+        ItemStack right = event.getRight();
+        Map<Enchantment, Integer> leftEnchantments = EnchantmentHelper.getEnchantments(left);
+        Map<Enchantment, Integer> rightEnchantments = EnchantmentHelper.getEnchantments(right);
+        //Obtaining tightening via an anvil
+        if (left.getItem() == Items.ENCHANTED_BOOK && !leftEnchantments.isEmpty() && right.getItem() == Items.ENCHANTED_BOOK &&  !rightEnchantments.isEmpty()) {
+            if (leftEnchantments.size() == 1 && rightEnchantments.size() == 1) {
+                int level = 0;
+                //multishot in left slot and marksman in right slot
+                if (leftEnchantments.containsKey(Enchantments.MULTISHOT) && rightEnchantments.containsKey(IEEnchantments.MARKSMAN.get())) {
+                    level = rightEnchantments.get(IEEnchantments.MARKSMAN.get());
+                //marksman in left slot and multishot in right slot
+                } else if (leftEnchantments.containsKey(IEEnchantments.MARKSMAN.get()) && rightEnchantments.containsKey(Enchantments.MULTISHOT)) {
+                    level = leftEnchantments.get(IEEnchantments.MARKSMAN.get());
+                }
+                if (level > 0) {
+                    ItemStack output = new ItemStack(Items.ENCHANTED_BOOK);
+                    EnchantmentInstance enchantmentInstance = new EnchantmentInstance(IEEnchantments.PRECISION.get(), level);
+                    EnchantedBookItem.addEnchantment(output, enchantmentInstance);
+                    event.setCost(level * PrecisionEnchantment.ANVIL_COST_PER_LEVEL);
+                    event.setOutput(output);
+                }
+            }
+        }
+    }
 
 /*    @SubscribeEvent
     public static void onArrowLooseEvent(ArrowLooseEvent event) {
@@ -52,12 +96,56 @@ public class IECommonEvents {
     }*/
 
     @SubscribeEvent
+    public static void onBlockBreakEvent(BlockEvent.BreakEvent event) {
+        BlockPos pos = event.getPos();
+        BlockState blockState = event.getState();
+        Block block = blockState.getBlock();
+        Player player = event.getPlayer();
+        ServerLevel serverLevel = (ServerLevel)player.level();
+        ItemStack itemStack = player.getMainHandItem();
+        int level = EnchantmentHelper.getTagEnchantmentLevel(IEEnchantments.SMASHING.get(), itemStack);
+        if (level > 0) {
+            //Smashing
+            if (blockState.canHarvestBlock(player.level(), pos, player)) {
+                if (block == Blocks.STONE || block == Blocks.DEEPSLATE) {
+                    if (player.getRandom().nextFloat() <= SmashingEnchantment.IRON_NUGGET_CHANCE * level) {
+                        event.setCanceled(true);
+                        //Flag 2 seems to be the right flag
+                        serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+                        Block.popResource(serverLevel, pos, new ItemStack(Items.IRON_NUGGET));
+                        block.popExperience(serverLevel, pos, 1);
+                        player.playNotifySound(SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5f, 0.9f + player.getRandom().nextFloat() * 2f);
+                    }
+                }
+                if (block == Blocks.NETHERRACK) {
+                    if (player.getRandom().nextFloat() <= SmashingEnchantment.GOLD_NUGGET_CHANCE * level) {
+                        event.setCanceled(true);
+                        serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+                        Block.popResource(serverLevel, pos, new ItemStack(Items.GOLD_NUGGET));
+                        block.popExperience(serverLevel, pos, 1);
+                        player.playNotifySound(SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5f, 0.9f + player.getRandom().nextFloat() * 2f);
+                    }
+                }
+                if (block == Blocks.ANDESITE || block == Blocks.DIORITE || block == Blocks.GRANITE) {
+                    if (player.getRandom().nextFloat() <= SmashingEnchantment.QUARTZ_CHANCE * level) {
+                        event.setCanceled(true);
+                        serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+                        Block.popResource(serverLevel, pos, new ItemStack(Items.QUARTZ));
+                        block.popExperience(serverLevel, pos, 1);
+                        player.playNotifySound(SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5f, 0.9f + player.getRandom().nextFloat() * 2f);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onEnderManAngerEvent(EnderManAngerEvent event) {
         Player player = event.getPlayer();
+        //Obscuring
         if (EnchantmentHelper.getEnchantmentLevel(IEEnchantments.OBSCURING.get(), player) > 0) {
             event.setCanceled(true);
         }
-
     }
 
     @SubscribeEvent
@@ -89,11 +177,28 @@ public class IECommonEvents {
     public static void onLivingDropsEvent(LivingDropsEvent event) {
         Collection<ItemEntity> itemEntities = event.getDrops();
         Entity attacker = event.getSource().getEntity();
+        LivingEntity target = event.getEntity();
+        Level level = target.level();
+        int lootLevel = event.getLootingLevel();
         if (attacker instanceof LivingEntity livingAttacker) {
+            //Pork chopper
             if (EnchantmentHelper.getEnchantmentLevel(IEEnchantments.PORK_CHOPPER.get(), livingAttacker) > 0) {
                 for (ItemEntity itemEntity : itemEntities) {
                     if (itemEntity.getItem().getItem() == Items.ROTTEN_FLESH) {
                         itemEntity.setItem(new ItemStack(Items.PORKCHOP, itemEntity.getItem().getCount()));
+                    }
+                }
+            }
+            //Injects obscuring enchantment book drop
+            if (target.getType() == EntityType.ENDERMAN) {
+                if (livingAttacker.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.CARVED_PUMPKIN) {
+                    if (target.getRandom().nextFloat() < ObscuringEnchantment.BOOK_DROP_CHANCE + ObscuringEnchantment.BOOK_DROP_CHANCE_PER_LOOTING_LEVEL * lootLevel) {
+                        ItemStack obscuringBook = new ItemStack(Items.ENCHANTED_BOOK);
+                        //Enchantment level has to be > 0 or the text will be ugly
+                        EnchantmentInstance obscuringInstance = new EnchantmentInstance(IEEnchantments.OBSCURING.get(), 1);
+                        EnchantedBookItem.addEnchantment(obscuringBook, obscuringInstance);
+                        ItemEntity obscuringEntity = new ItemEntity(level, target.getX(), target.getY(), target.getZ(), obscuringBook);
+                        level.addFreshEntity(obscuringEntity);
                     }
                 }
             }
@@ -117,15 +222,26 @@ public class IECommonEvents {
     @SubscribeEvent
     public static void onLivingHurtEvent(LivingHurtEvent event) {
         DamageSource source = event.getSource();
-        Entity attackingEntity = source.getEntity();
-        LivingEntity targetLivingEntity = event.getEntity();
+        Entity attacker = source.getEntity();
+        LivingEntity target = event.getEntity();
         float damage = event.getAmount();
-        if (damage > 0 && attackingEntity instanceof LivingEntity attackingLivingEntity) {
-            //Lifesteal
+        if (damage > 0 && attacker instanceof LivingEntity livingAttacker) {
+            ItemStack itemStack = livingAttacker.getMainHandItem();
             if (!source.isIndirect()) {
-                int level = EnchantmentHelper.getEnchantmentLevel(IEEnchantments.LIFESTEAL.get(), attackingLivingEntity);
+                //Lifesteal
+                int level = EnchantmentHelper.getTagEnchantmentLevel(IEEnchantments.LIFESTEAL.get(), itemStack);
                 if (level > 0) {
-                    attackingLivingEntity.heal(level * LifestealEnchantment.LIFESTEAL_MULTIPLIER * Math.min(targetLivingEntity.getHealth(), damage));
+                    livingAttacker.heal(level * LifestealEnchantment.LIFESTEAL_MULTIPLIER * Math.min(target.getHealth(), damage));
+                }
+                //Swatting
+                level = EnchantmentHelper.getTagEnchantmentLevel(IEEnchantments.SWATTING.get(), itemStack);
+                if (level > 0) {
+                    if (!target.onGround()) {
+                        event.setAmount(SwattingEnchantment.DAMAGE_MULTIPLIER * event.getAmount());
+                        target.addDeltaMovement(new Vec3(0, SwattingEnchantment.PULL_DOWN, 0));
+                        target.hasImpulse = true;
+                        livingAttacker.level().playSound(null, target.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.NEUTRAL, 0.5f, 1f);
+                    }
                 }
             }
         }
@@ -229,19 +345,59 @@ public class IECommonEvents {
     }
 
     @SubscribeEvent
+    public static void onLootTableLoadEvent(LootTableLoadEvent event) {
+        if (event.getName().equals(BuiltInLootTables.FLETCHER_GIFT)) {
+            LootPool lootPool = event.getTable().getPool()
+        }
+    }
+
+    @SubscribeEvent
     public static void onProjectileImpactEvent(ProjectileImpactEvent event) {
         Projectile projectile = event.getProjectile();
+        Entity owner = projectile.getOwner();
+        int level;
+        //Accumulating
+        if (owner instanceof Player player) {
+            if (projectile instanceof AbstractArrow arrow) {
+                level = EnchantmentHelper.getEnchantmentLevel(IEEnchantments.ACCUMULATING.get(), player);
+                if (level > 0) {
+                    ItemStack itemStack = ((AbstractArrowAccessor)arrow).getPickupItem_IE();
+                    if (event.getRayTraceResult().getType() == HitResult.Type.ENTITY) {
+                        if (player.getRandom().nextFloat() <= level / (level + 1f)) {
+                            player.addItem(itemStack);
+                            arrow.discard();
+                        }
+                    }
+                    else {
+                        player.addItem(itemStack);
+                        arrow.discard();
+                    }
+                }
+            }
+        }
         if (event.getRayTraceResult().getType() == HitResult.Type.ENTITY) {
             Entity entity = ((EntityHitResult)(event.getRayTraceResult())).getEntity();
             if (entity instanceof LivingEntity livingEntity) {
                 //Harpooning
-                if (projectile instanceof FishingHook fishingHook && fishingHook.getOwner() instanceof LivingEntity owner) {
-                    int level = ((FishingHookAccessor)fishingHook).getHarpooningLevelIE();
+                if (projectile instanceof FishingHook fishingHook && owner instanceof LivingEntity livingOwner) {
+                    level = ((FishingHookAccessor)fishingHook).getHarpooningLevelIE();
                     if (level > 0) {
                         float damage = 1f + (HarpooningEnchantment.DAMAGE_MULTIPLIER * level);
-                        livingEntity.hurt(livingEntity.damageSources().indirectMagic(fishingHook, owner), damage);
+                        livingEntity.hurt(livingEntity.damageSources().indirectMagic(fishingHook, livingOwner), damage);
                     }
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onShieldBlockEvent(ShieldBlockEvent event) {
+        LivingEntity defender = event.getEntity();
+        DamageSource source = event.getDamageSource();
+        if (source.getDirectEntity() instanceof LivingEntity attacker) {
+            int level = defender.getUseItem().getEnchantmentLevel(IEEnchantments.REBOUNDING.get());
+            if (level > 0) {
+                attacker.knockback(ReboundingEnchantment.KNOCKBACK_BASE + level * ReboundingEnchantment.KNOCKBACK_INCREASE, defender.getX() - attacker.getX(), defender.getZ() - attacker.getZ());
             }
         }
     }

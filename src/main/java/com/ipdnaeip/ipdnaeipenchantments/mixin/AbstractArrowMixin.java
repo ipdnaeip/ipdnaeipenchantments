@@ -2,11 +2,14 @@ package com.ipdnaeip.ipdnaeipenchantments.mixin;
 
 import com.ipdnaeip.ipdnaeipenchantments.IpdnaeipEnchantments;
 import com.ipdnaeip.ipdnaeipenchantments.accessor.AbstractArrowAccessor;
+import com.ipdnaeip.ipdnaeipenchantments.enchantment.enchantments.AerodynamicsEnchantment;
 import com.ipdnaeip.ipdnaeipenchantments.enchantment.enchantments.AquadynamicsEnchantment;
 import com.ipdnaeip.ipdnaeipenchantments.enchantment.enchantments.DrawEnchantment;
 import com.ipdnaeip.ipdnaeipenchantments.enchantment.enchantments.MarksmanEnchantment;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -18,6 +21,9 @@ public abstract class AbstractArrowMixin implements AbstractArrowAccessor {
     private int drawLevelIE = 0;
     private int hunterLevelIE = 0;
     private int marksmanLevelIE = 0;
+
+    @Shadow
+    protected abstract ItemStack getPickupItem();
 
     //Getters
 
@@ -44,6 +50,11 @@ public abstract class AbstractArrowMixin implements AbstractArrowAccessor {
     @Override
     public int getMarksmanLevelIE() {
         return this.marksmanLevelIE;
+    }
+
+    @Override
+    public ItemStack getPickupItem_IE() {
+        return this.getPickupItem();
     }
 
     //Setters
@@ -86,16 +97,18 @@ public abstract class AbstractArrowMixin implements AbstractArrowAccessor {
         return f;
     }
 
-/*    //Reduces the effect of gravity on the arrow with aerodynamics
-    @ModifyConstant(method = "tick()V", constant = @Constant(floatValue = 0.05f, ordinal = 1))
-    public float modifyTick(float f) {
+    //Reduces the effect of gravity on the arrow with aerodynamics
+    //THANK YOU FABRIC DISCORD AND WARJORT FROM THE MINECRAFTFORGE FORUMS
+    @ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.05000000074505806D), remap = false)
+    public double modifyTick(double f) {
         AbstractArrow arrow = (AbstractArrow)(Object)this;
         int level = ((AbstractArrowAccessor)arrow).getAerodynamicsLevelIE();
         if (level > 0) {
             f = f - (level * AerodynamicsEnchantment.GRAVITY_REDUCTION);
+            arrow.hasImpulse = true;
         }
         return f;
-    }*/
+    }
 
     //Increases arrow velocity under water with aquadynamics
     @Inject(method = "Lnet/minecraft/world/entity/projectile/AbstractArrow;getWaterInertia()F", at = @At("RETURN"), cancellable = true)

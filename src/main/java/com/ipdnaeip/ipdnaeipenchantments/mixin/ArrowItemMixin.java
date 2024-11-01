@@ -22,7 +22,7 @@ public abstract class ArrowItemMixin {
     //The stack is the arrow from which it is applying effects, not the bow
     @Inject(method = "Lnet/minecraft/world/item/ArrowItem;createArrow(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/entity/projectile/AbstractArrow;", at = @At(value = "RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void injectCreateArrow(Level level, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<AbstractArrow> info, Arrow arrow) {
-        //((AbstractArrowAccessor)arrow).setAerodynamicsLevelIE(EnchantmentHelper.getEnchantmentLevel(IEEnchantments.AERODYNAMICS.get(), shooter));
+        ((AbstractArrowAccessor)arrow).setAerodynamicsLevelIE(EnchantmentHelper.getEnchantmentLevel(IEEnchantments.AERODYNAMICS.get(), shooter));
         ((AbstractArrowAccessor)arrow).setAquadynamicsLevelIE(EnchantmentHelper.getEnchantmentLevel(IEEnchantments.AQUADYNAMICS.get(), shooter));
         ((AbstractArrowAccessor)arrow).setDrawLevelIE(EnchantmentHelper.getEnchantmentLevel(IEEnchantments.DRAW.get(), shooter));
         ((AbstractArrowAccessor)arrow).setHunterLevelIE(EnchantmentHelper.getEnchantmentLevel(IEEnchantments.HUNTER.get(), shooter));
