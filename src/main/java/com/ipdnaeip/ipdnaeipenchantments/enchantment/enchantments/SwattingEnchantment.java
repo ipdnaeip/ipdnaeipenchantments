@@ -13,4 +13,14 @@ public class SwattingEnchantment extends Enchantment {
         super(Rarity.UNCOMMON, IEEnchantmentCategories.SHOVEL, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
+    @Override
+    public int getMinCost(int level) {
+        return 40;
+    }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 20;
+    }
+
 }

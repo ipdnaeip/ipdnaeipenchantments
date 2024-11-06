@@ -23,8 +23,14 @@ public class LancingEnchantment extends Enchantment {
         return 5;
     }
 
-/*    @Override
-    protected boolean checkCompatibility(Enchantment pOther) {
-        return super.checkCompatibility(pOther) && pOther instanceof TridentImpalerEnchantment;
-    }*/
+    @Override
+    public int getMinCost(int level) {
+        return 10 + 6 * (level - 1);
+    }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 10;
+    }
+
 }

@@ -16,4 +16,14 @@ public class RangerEnchantment extends Enchantment {
     public int getMaxLevel() {
         return 4;
     }
+
+    @Override
+    public int getMinCost(int level) {
+        return 14 + 8 * (level - 1);
+    }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 10;
+    }
 }

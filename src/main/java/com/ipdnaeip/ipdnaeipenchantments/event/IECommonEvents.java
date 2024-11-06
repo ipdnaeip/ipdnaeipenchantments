@@ -5,6 +5,7 @@ import com.ipdnaeip.ipdnaeipenchantments.accessor.FishingHookAccessor;
 import com.ipdnaeip.ipdnaeipenchantments.enchantment.enchantments.*;
 import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantments;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -32,6 +33,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -112,6 +121,8 @@ public class IECommonEvents {
                         event.setCanceled(true);
                         //Flag 2 seems to be the right flag
                         serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+//                        block.destroy(serverLevel, pos, blockState);
+                        itemStack.mineBlock(serverLevel, blockState, pos, player);
                         Block.popResource(serverLevel, pos, new ItemStack(Items.IRON_NUGGET));
                         block.popExperience(serverLevel, pos, 1);
                         player.playNotifySound(SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5f, 0.9f + player.getRandom().nextFloat() * 2f);
@@ -121,6 +132,8 @@ public class IECommonEvents {
                     if (player.getRandom().nextFloat() <= SmashingEnchantment.GOLD_NUGGET_CHANCE * level) {
                         event.setCanceled(true);
                         serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+//                        block.destroy(serverLevel, pos, blockState);
+                        itemStack.mineBlock(serverLevel, blockState, pos, player);
                         Block.popResource(serverLevel, pos, new ItemStack(Items.GOLD_NUGGET));
                         block.popExperience(serverLevel, pos, 1);
                         player.playNotifySound(SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5f, 0.9f + player.getRandom().nextFloat() * 2f);
@@ -130,6 +143,8 @@ public class IECommonEvents {
                     if (player.getRandom().nextFloat() <= SmashingEnchantment.QUARTZ_CHANCE * level) {
                         event.setCanceled(true);
                         serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+//                        block.destroy(serverLevel, pos, blockState);
+                        itemStack.mineBlock(serverLevel, blockState, pos, player);
                         Block.popResource(serverLevel, pos, new ItemStack(Items.QUARTZ));
                         block.popExperience(serverLevel, pos, 1);
                         player.playNotifySound(SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5f, 0.9f + player.getRandom().nextFloat() * 2f);
@@ -214,7 +229,7 @@ public class IECommonEvents {
         if (useAnim == UseAnim.EAT || useAnim == UseAnim.DRINK) {
             int level = EnchantmentHelper.getEnchantmentLevel(IEEnchantments.GLUTTONY.get(), livingEntity);
             if (level > 0) {
-                event.setDuration(Math.max(0, (int)((float)event.getDuration() * (1 - (GluttonyEnchantment.DURATION_REDUCTION * ((float) level))))));
+                event.setDuration(Math.max(1, (int)((float)event.getDuration() * (1 - (GluttonyEnchantment.DURATION_REDUCTION * ((float) level))))));
             }
         }
     }
@@ -346,8 +361,10 @@ public class IECommonEvents {
 
     @SubscribeEvent
     public static void onLootTableLoadEvent(LootTableLoadEvent event) {
+        //Accumulating fletcher gift loot injection
         if (event.getName().equals(BuiltInLootTables.FLETCHER_GIFT)) {
-            LootPool lootPool = event.getTable().getPool()
+            LootPool lootPool = LootPool.lootPool().add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder().withEnchantment(IEEnchantments.ACCUMULATING.get(), UniformGenerator.between(IEEnchantments.PRECISION.get().getMinLevel(), IEEnchantments.PRECISION.get().getMaxLevel())))).when(LootItemRandomChanceCondition.randomChance(AccumulatingEnchantment.REWARD_CHANCE)).build();
+            event.getTable().addPool(lootPool);
         }
     }
 

@@ -19,8 +19,13 @@ public class SturdyEnchantment extends Enchantment {
     }
 
     @Override
-    protected boolean checkCompatibility(Enchantment pOther) {
-        return super.checkCompatibility(pOther) && pOther != Enchantments.SWIFT_SNEAK;
+    public int getMinCost(int level) {
+        return 25 + 5 * (level - 1);
+    }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 20;
     }
 
     public static float getKnockbackMultiplier(int level) {

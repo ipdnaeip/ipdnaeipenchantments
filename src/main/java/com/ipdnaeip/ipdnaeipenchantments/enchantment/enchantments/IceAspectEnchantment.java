@@ -22,6 +22,16 @@ public class IceAspectEnchantment extends Enchantment {
     }
 
     @Override
+    public int getMinCost(int level) {
+        return 25 + 10 * (level - 1);
+    }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 20;
+    }
+
+    @Override
     public void doPostAttack(LivingEntity pAttacker, Entity pTarget, int pLevel) {
         pTarget.setTicksFrozen(Math.max(pTarget.getTicksFrozen(), Math.min(getMaxDuration(pTarget, pLevel), pTarget.getTicksFrozen() + BASE_DURATION + (pLevel * DURATION_MULTIPLIER))));
     }

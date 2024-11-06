@@ -27,7 +27,12 @@ public class SmashingEnchantment extends Enchantment {
     }
 
     @Override
-    protected boolean checkCompatibility(Enchantment pOther) {
-        return super.checkCompatibility(pOther) && pOther != Enchantments.SILK_TOUCH;
+    public int getMinCost(int level) {
+        return 15 + 9 * (level - 1);
+    }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 50;
     }
 }

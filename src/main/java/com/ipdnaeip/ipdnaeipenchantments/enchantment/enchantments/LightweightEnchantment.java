@@ -20,4 +20,14 @@ public class LightweightEnchantment extends Enchantment {
         return 4;
     }
 
+    @Override
+    public int getMinCost(int level) {
+        return 20 + 6 * (level - 1);
+    }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 10;
+    }
+
 }

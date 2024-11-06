@@ -22,8 +22,13 @@ public class ChargingEnchantment extends Enchantment {
     }
 
     @Override
-    protected boolean checkCompatibility(Enchantment pOther) {
-        return super.checkCompatibility(pOther) && pOther != Enchantments.SWEEPING_EDGE;
+    public int getMinCost(int level) {
+        return 20 + 6 * (level - 1);
+    }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 10;
     }
 
 }

@@ -19,7 +19,13 @@ public class LifestealEnchantment extends Enchantment {
     }
 
     @Override
-    protected boolean checkCompatibility(Enchantment pOther) {
-        return super.checkCompatibility(pOther) && pOther != Enchantments.SWEEPING_EDGE;
+    public int getMinCost(int level) {
+        return 30 + 10 * (level - 1);
     }
+
+    @Override
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 20;
+    }
+
 }
