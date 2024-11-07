@@ -207,13 +207,13 @@ public class IECommonEvents {
             //Injects obscuring enchantment book drop
             if (target.getType() == EntityType.ENDERMAN) {
                 if (livingAttacker.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.CARVED_PUMPKIN) {
-                    if (target.getRandom().nextFloat() < ObscuringEnchantment.BOOK_DROP_CHANCE + ObscuringEnchantment.BOOK_DROP_CHANCE_PER_LOOTING_LEVEL * lootLevel) {
+                    if (target.getRandom().nextFloat() < ObscuringEnchantment.BOOK_DROP_CHANCE + (ObscuringEnchantment.BOOK_DROP_CHANCE_PER_LOOTING_LEVEL * lootLevel)) {
                         ItemStack obscuringBook = new ItemStack(Items.ENCHANTED_BOOK);
                         //Enchantment level has to be > 0 or the text will be ugly
                         EnchantmentInstance obscuringInstance = new EnchantmentInstance(IEEnchantments.OBSCURING.get(), 1);
                         EnchantedBookItem.addEnchantment(obscuringBook, obscuringInstance);
-                        ItemEntity obscuringEntity = new ItemEntity(level, target.getX(), target.getY(), target.getZ(), obscuringBook);
-                        level.addFreshEntity(obscuringEntity);
+                        ItemEntity obscuringBookEntity = new ItemEntity(level, target.getX(), target.getY(), target.getZ(), obscuringBook);
+                        level.addFreshEntity(obscuringBookEntity);
                     }
                 }
             }

@@ -11,7 +11,7 @@ public class MetabolizeEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMinLevel() {
+    public int getMaxLevel() {
         return 4;
     }
 

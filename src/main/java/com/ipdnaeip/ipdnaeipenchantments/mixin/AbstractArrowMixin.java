@@ -99,7 +99,7 @@ public abstract class AbstractArrowMixin implements AbstractArrowAccessor {
 
     //Reduces the effect of gravity on the arrow with aerodynamics
     //THANK YOU FABRIC DISCORD AND WARJORT FROM THE MINECRAFTFORGE FORUMS
-    @ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.05000000074505806D), remap = false)
+    @ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.05000000074505806D)/*, remap = false*/)
     public double modifyTick(double f) {
         AbstractArrow arrow = (AbstractArrow)(Object)this;
         int level = ((AbstractArrowAccessor)arrow).getAerodynamicsLevelIE();
