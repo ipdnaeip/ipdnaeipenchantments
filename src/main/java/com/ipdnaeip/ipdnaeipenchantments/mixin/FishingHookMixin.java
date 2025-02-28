@@ -50,8 +50,8 @@ public abstract class FishingHookMixin implements FishingHookAccessor {
     }
 
     //Applies fishing rod enchantments to fishing hook entity
-    @Inject(method = "Lnet/minecraft/world/entity/projectile/FishingHook;<init>(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/Level;II)V", at = @At("TAIL"))
-    public void injectFishingHook(Player player, Level level, int luck, int lureSpeed, CallbackInfo info) {
+    @Inject(method = "<init>(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/Level;II)V", at = @At("TAIL"))
+    private void injectFishingHook(Player player, Level level, int luck, int lureSpeed, CallbackInfo info) {
         this.setAnglersArmLevelIE(EnchantmentHelper.getEnchantmentLevel(IEEnchantments.ANGLER.get(), player));
         this.setHarpooningLevelIE(EnchantmentHelper.getEnchantmentLevel(IEEnchantments.HARPOONING.get(), player));
         this.setReelingLevelIE(EnchantmentHelper.getEnchantmentLevel(IEEnchantments.REELING.get(), player));
@@ -59,8 +59,8 @@ public abstract class FishingHookMixin implements FishingHookAccessor {
 
     //IGNORE THE ERRORS
     //Increases pull velocity of fishing hooks with reeling
-    @ModifyVariable(method = "Lnet/minecraft/world/entity/projectile/FishingHook;pullEntity(Lnet/minecraft/world/entity/Entity;)V", at = @At("STORE"))
-    public Vec3 modifyPullEntity(Vec3 vec3) {
+    @ModifyVariable(method = "pullEntity(Lnet/minecraft/world/entity/Entity;)V", at = @At("STORE"))
+    private Vec3 modifyPullEntity(Vec3 vec3) {
         if (this.reelingLevelIE > 0) {
             double scale = this.reelingLevelIE * ReelingEnchantment.PULL_INCREASE;
             double xzScale = 1 + scale;

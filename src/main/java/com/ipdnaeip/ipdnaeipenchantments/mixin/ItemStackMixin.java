@@ -14,7 +14,7 @@ public abstract class ItemStackMixin implements IForgeItemStack {
     //IGNORE THE ERRORS
     //Displays the increased attack speed of lightweight on the item tooltip
     @ModifyVariable(method = "getTooltipLines(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;", at = @At(value = "STORE", ordinal = 3))
-    public double modifyAttackSpeedTooltip(double d) {
+    private double modifyAttackSpeedTooltip(double d) {
         return d + (this.getEnchantmentLevel(IEEnchantments.LIGHTWEIGHT.get()) * LightweightEnchantment.ATTACK_SPEED_INCREASE);
     }
 }

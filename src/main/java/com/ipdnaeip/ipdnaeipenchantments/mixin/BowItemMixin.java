@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class BowItemMixin {
 
     //Gives arrows fired from bows piercing
-    @ModifyVariable(method = "Lnet/minecraft/world/item/BowItem;releaseUsing(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"))
-    public AbstractArrow injectReleaseUsing(AbstractArrow arrow, ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
+    @ModifyVariable(method = "releaseUsing(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"))
+    private AbstractArrow injectReleaseUsing(AbstractArrow arrow, ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
         if (IpdnaeipEnchantments.IE_CONFIG.piercingBow.get()) {
             int level = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.PIERCING, pStack);
             if (level > 0) {
@@ -26,19 +26,5 @@ public class BowItemMixin {
         }
         return arrow;
     }
-
-
-/*    @ModifyVariable(method = "Lnet/minecraft/world/item/BowItem;releaseUsing(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;I)V", at = @At("STORE"), ordinal = 5)
-    private int modifyInt(int i, ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
-        int level = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.QUICK_CHARGE, pStack);
-        if (level > 0) {
-            if (level < 5) {
-                i *= 25.0 / (25 - (5 * level));
-            } else {
-                i = Integer.MAX_VALUE;
-            }
-        }
-        return i;
-    }*/
 
 }

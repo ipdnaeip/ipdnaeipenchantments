@@ -16,7 +16,7 @@ public abstract class EnchantmentMixin {
 
 
     @Inject(method = "canApplyAtEnchantingTable(Lnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true, remap = false)
-    public void injectCanApplyAtEnchantingTable(ItemStack itemStack, CallbackInfoReturnable<Boolean> info) {
+    private void injectCanApplyAtEnchantingTable(ItemStack itemStack, CallbackInfoReturnable<Boolean> info) {
         Enchantment enchantment = (Enchantment) (Object) this;
         if (ForgeRegistries.ENCHANTMENTS.getKey(enchantment).getNamespace().equals(IpdnaeipEnchantments.MOD_ID)) {
             //Allows for crossbows to accept bow enchantments at enchanting tables

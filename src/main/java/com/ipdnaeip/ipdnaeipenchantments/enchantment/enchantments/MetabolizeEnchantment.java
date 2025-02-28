@@ -6,6 +6,9 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class MetabolizeEnchantment extends Enchantment {
 
+    public static final int SATURATED_MULTIPLIER = 1;
+    public static final int UNSATURATED_MULTIPLIER = 4;
+
     public MetabolizeEnchantment() {
         super(Rarity.RARE, EnchantmentCategory.ARMOR_HEAD, new EquipmentSlot[]{EquipmentSlot.HEAD});
     }

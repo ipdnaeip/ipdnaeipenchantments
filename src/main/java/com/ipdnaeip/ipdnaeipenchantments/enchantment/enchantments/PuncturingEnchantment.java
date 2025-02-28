@@ -1,15 +1,15 @@
 package com.ipdnaeip.ipdnaeipenchantments.enchantment.enchantments;
 
+import com.ipdnaeip.ipdnaeipenchantments.registry.IEEnchantmentCategories;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
-public class AerodynamicsEnchantment extends Enchantment {
+public class PuncturingEnchantment extends Enchantment {
 
-    public static final double GRAVITY_REDUCTION = 6D;
+    public static final int ARMOR_REDUCTION = 2;
 
-    public AerodynamicsEnchantment() {
-        super(Rarity.UNCOMMON, EnchantmentCategory.BOW, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+    public PuncturingEnchantment() {
+        super(Rarity.UNCOMMON, IEEnchantmentCategories.MELEE, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     @Override
@@ -24,6 +24,7 @@ public class AerodynamicsEnchantment extends Enchantment {
 
     @Override
     public int getMaxCost(int level) {
-        return this.getMinCost(level) + 10;
+        return this.getMinCost(level) + 30;
     }
+
 }

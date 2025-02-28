@@ -26,6 +26,7 @@ public class IEEnchantments {
     public static final RegistryObject<Enchantment> ACCUMULATING = DEFERRED_REGISTER.register("accumulating", AccumulatingEnchantment::new);
 
     //Crossbow
+    public static final RegistryObject<Enchantment> ACCELERANT = DEFERRED_REGISTER.register("accelerant", AccelerantEnchantment::new);
     public static final RegistryObject<Enchantment> PRECISION = DEFERRED_REGISTER.register("precision", PrecisionEnchantment::new);
 
     //Digger
@@ -59,6 +60,7 @@ public class IEEnchantments {
     public static final RegistryObject<Enchantment> CHARGING = DEFERRED_REGISTER.register("charging", ChargingEnchantment::new);
     public static final RegistryObject<Enchantment> LIGHTWEIGHT = DEFERRED_REGISTER.register("lightweight", LightweightEnchantment::new);
     public static final RegistryObject<Enchantment> QUICKDRAW = DEFERRED_REGISTER.register("quickdraw", QuickdrawEnchantment::new);
+    public static final RegistryObject<Enchantment> PUNCTURING = DEFERRED_REGISTER.register("puncturing", PuncturingEnchantment::new);
 
     //Shield
     public static final RegistryObject<Enchantment> PHALANX = DEFERRED_REGISTER.register("phalanx", PhalanxEnchantment::new);

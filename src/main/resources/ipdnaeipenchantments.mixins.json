@@ -5,9 +5,11 @@
   "mixins": [
     "AbstractArrowMixin",
     "ArrowItemMixin",
+    "BlockMixin",
     "BowItemMixin",
     "CrossbowItemMixin",
     "EnchantmentMixin",
+    "FireworkRocketEntityMixin",
     "FishingHookMixin",
     "FoodDataMixin",
     "ItemMixin",

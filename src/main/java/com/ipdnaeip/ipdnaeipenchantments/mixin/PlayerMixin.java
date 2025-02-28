@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerMixin extends LivingEntityMixin {
 
     //Increases attack strength percentage after switching weapons
-    @Redirect(method = "Lnet/minecraft/world/entity/player/Player;tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;resetAttackStrengthTicker()V"))
-    public void redirectAttackStrengthTicker(Player player) {
+    @Redirect(method = "tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;resetAttackStrengthTicker()V"))
+    private void redirectAttackStrengthTicker(Player player) {
         int level = EnchantmentHelper.getEnchantmentLevel(IEEnchantments.QUICKDRAW.get(), player);
         if (level > 0) {
             //Has to be server side otherwise the attack bar glitches
@@ -29,26 +29,13 @@ public abstract class PlayerMixin extends LivingEntityMixin {
         }
     }
 
-/*    //Increases attack strength percentage after switching weapons
-    @Redirect(method = "Lnet/minecraft/world/entity/player/Player;tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;resetAttackStrengthTicker()V"))
-    public void redirectAttackStrengthTicker(Player player) {
-        int level = EnchantmentHelper.getEnchantmentLevel(IEEnchantments.QUICKDRAW.get(), player);
-        if (level > 0) {
-            if (!player.level().isClientSide()) System.out.println(this.attackStrengthTicker);
-            this.attackStrengthTicker = (int)(player.getCurrentItemAttackStrengthDelay() * (level * QuickdrawEnchantment.RECOVERY_MULTIPLIER));
-            if (!player.level().isClientSide()) System.out.println(this.attackStrengthTicker);
-        } else {
-            player.resetAttackStrengthTicker();
-        }
-    }*/
-
-    @Inject(method = "Lnet/minecraft/world/entity/player/Player;getFlyingSpeed()F", at = @At("RETURN"), cancellable = true)
+/*    @Inject(method = "getFlyingSpeed()F", at = @At("RETURN"), cancellable = true)
     public void injectGetFlyingSpeed(CallbackInfoReturnable<Float> info) {
         Player player = (Player)(Object)this;
         int level = EnchantmentHelper.getEnchantmentLevel(IEEnchantments.ACROBATICS.get(), player);
         if (level > 0) {
             info.setReturnValue(info.getReturnValue() + AcrobaticsEnchantment.FLY_INCREASE * level);
         }
-    }
+    }*/
 
 }

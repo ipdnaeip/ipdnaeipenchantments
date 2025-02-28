@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PowderSnowBlock.class)
 public class PowderSnowBlockMixin {
 
-    @Inject(method = "Lnet/minecraft/world/level/block/PowderSnowBlock;canEntityWalkOnPowderSnow(Lnet/minecraft/world/entity/Entity;)Z", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "canEntityWalkOnPowderSnow(Lnet/minecraft/world/entity/Entity;)Z", at = @At("RETURN"), cancellable = true)
     private static void injectCanEntityWalkOnPowderSnow(Entity entity, CallbackInfoReturnable<Boolean> info) {
         if (entity instanceof LivingEntity livingEntity && EnchantmentHelper.getEnchantmentLevel(IEEnchantments.LIGHTFOOT.get(), livingEntity) > 0) {
             info.setReturnValue(true);
