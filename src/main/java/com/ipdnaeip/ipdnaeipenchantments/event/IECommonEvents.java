@@ -184,6 +184,11 @@ public class IECommonEvents {
         }
     }
 
+/*    @SubscribeEvent
+    public static void onLivingEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
+
+    }*/
+
     @SubscribeEvent
     public static void onLivingHurtEvent(LivingHurtEvent event) {
         DamageSource source = event.getSource();
@@ -332,7 +337,7 @@ public class IECommonEvents {
     public static void onLootTableLoadEvent(LootTableLoadEvent event) {
         //Accumulating fletcher gift loot injection
         if (event.getName().equals(BuiltInLootTables.FLETCHER_GIFT)) {
-            LootPool lootPool = LootPool.lootPool().add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder().withEnchantment(IEEnchantments.ACCUMULATING.get(), UniformGenerator.between(IEEnchantments.PRECISION.get().getMinLevel(), IEEnchantments.PRECISION.get().getMaxLevel())))).when(LootItemRandomChanceCondition.randomChance(AccumulatingEnchantment.REWARD_CHANCE)).build();
+            LootPool lootPool = LootPool.lootPool().add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder().withEnchantment(IEEnchantments.ACCUMULATING.get(), UniformGenerator.between(IEEnchantments.ACCUMULATING.get().getMinLevel(), IEEnchantments.ACCUMULATING.get().getMaxLevel())))).when(LootItemRandomChanceCondition.randomChance(AccumulatingEnchantment.REWARD_CHANCE)).build();
             event.getTable().addPool(lootPool);
         }
     }
